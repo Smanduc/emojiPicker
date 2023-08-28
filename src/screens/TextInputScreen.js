@@ -11,48 +11,53 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-// import EmojiSelector from "./EmojiSelectorScreen";
-import EmojiReactions from "./Components/ReactionEmoji";
+import EmojiSelection from "./EmojiSelectorScreen";
+// import EmojiReactions from "./Components/ReactionEmoji";
 
 const ChatInput = () => {
-  const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
+  // const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
   const [selectedReaction, setSelectedReaction] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [showEmojiSelector, setShowEmojiSelector] = useState(false);
+  const [message, setMessages] = useState([]);
 
   const toggleEmojiSelector = () => {
-    setIsEmojiSelectorOpen(!isEmojiSelectorOpen);
+    setShowEmojiSelector(!showEmojiSelector);
   };
+
+  // const handleEmojiSelect = (emoji) => {
+  //   setText(text + emoji);
+  // };
 
   const handleReactionSelection = (reaction) => {
     setSelectedReaction(reaction);
-    setIsEmojiSelectorOpen(false);
+    setShowEmojiSelector(false);
   };
 
   const handleSend = () => {
-    setMessages([...messages, { selectedReaction }]);
+    setMessages([...message, { text: message, reaction: selectedReaction }]);
     setSelectedReaction("");
   };
 
-  const emojiData = ["😄", "❤️", "👍", "😊", "🎉"];
+  // const emojiData = ["😄", "❤️", "👍", "😊", "🎉"];
 
   return (
     <View>
-      {messages.map((message, index) => (
+      {/* {message.map((message, index) => (
         <ChatMessage
           key={index}
           text={message.text}
-          reactions={emojiData}
+          reactions={handleEmojiSelect} //emojiData
           onReactionPress={handleReactionSelection}
-        />
-      ))}
+        /> */}
+      {/* ))} */}
       <View style={{ flexDirection: "row" }}>
         <TextInput
           placeholder="Type your message..."
           value={selectedReaction}
           onChangeText={setSelectedReaction}
         />
-
-        <TouchableOpacity onPress={toggleEmojiSelector}>
+        {/* // toggleEmojiSelector */}
+        <TouchableOpacity onPress={() => setShowEmojiSelector(true)}>
           <Entypo name="emoji-happy" size={15} color="grey" />
         </TouchableOpacity>
       </View>
@@ -62,10 +67,10 @@ const ChatInput = () => {
         </TouchableOpacity>
       </View>
 
-      <Modal visible={isEmojiSelectorOpen} animationType="slide">
+      <Modal visible={showEmojiSelector} animationType="slide">
         <View style={{ flex: 1, backgroundColor: "white" }}>
           <FlatList
-            data={emojiData}
+            data={EmojiSelection} //emojiData
             numColumns={5}
             keyExtractor={(item) => item}
             renderItem={({ item }) => (
