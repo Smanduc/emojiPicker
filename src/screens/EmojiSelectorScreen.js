@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import EmojiSelector from "react-native-emoji-selector";
 
-const EmojiSelection = () => {
+const EmojiSelection = ({ setSelectedReaction }) => {
   const [text, setText] = useState("");
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
 
   const handleEmojiSelect = (emoji) => {
     setText(text + emoji);
+    setSelectedReaction(text + emoji);
   };
 
   return (

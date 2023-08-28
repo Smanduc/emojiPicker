@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Modal,
+  Button,
   FlatList,
   ChatMessage,
 } from "react-native";
@@ -18,7 +19,8 @@ const ChatInput = () => {
   // const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
   const [selectedReaction, setSelectedReaction] = useState("");
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
-  const [message, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const toggleEmojiSelector = () => {
     setShowEmojiSelector(!showEmojiSelector);
@@ -28,58 +30,82 @@ const ChatInput = () => {
   //   setText(text + emoji);
   // };
 
+  const emojiData = ["❤️", "👍"];
+
   const handleReactionSelection = (reaction) => {
     setSelectedReaction(reaction);
     setShowEmojiSelector(false);
   };
 
   const handleSend = () => {
-    setMessages([...message, { text: message, reaction: selectedReaction }]);
-    setSelectedReaction("");
-  };
+    setMessages([
+      ...message,
+      { text: message, sender: "user", reaction: selectedReaction },
+    ]);
+    setMessage(""), setSelectedReaction("");
 
-  // const emojiData = ["😄", "❤️", "👍", "😊", "🎉"];
+    if (message.trim() === "") {
+      return;
+    }
+  };
 
   return (
     <View>
-      {/* {message.map((message, index) => (
-        <ChatMessage
-          key={index}
-          text={message.text}
-          reactions={handleEmojiSelect} //emojiData
-          onReactionPress={handleReactionSelection}
-        /> */}
+      {/* {message?.map((message, index) => ( */}
+      {/* <ChatMessage
+        key={2}
+        text={"message.text"}
+        reactions={emojiData} //emojiData
+        onReactionPress={handleReactionSelection}
+      /> */}
       {/* ))} */}
-      <View style={{ flexDirection: "row" }}>
-        <TextInput
+      <View
+        style={{
+          flexDirection: "row",
+          borderWidth: 1,
+          padding: 5,
+          marginRight: 8,
+        }}
+      >
+        <TextInput //style={{ flex: 1, borderWidth: 1, padding: 10 }}
           placeholder="Type your message..."
-          value={selectedReaction}
+          value={message} //selectReaction
           onChangeText={setSelectedReaction}
         />
         {/* // toggleEmojiSelector */}
-        <TouchableOpacity onPress={() => setShowEmojiSelector(true)}>
-          <Entypo name="emoji-happy" size={15} color="grey" />
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: 4,
+            marginLeft: 8,
+          }}
+          onPress={() => setShowEmojiSelector(true)}
+        >
+          <Entypo name="emoji-happy" size={30} color="grey" />
         </TouchableOpacity>
+        <Button
+          style={{
+            paddingHorizontal: 4,
+            paddingVertical: 4,
+            flexDirection: "row",
+            marginLeft: 8,
+          }}
+          title="Send"
+          onPress={handleSend}
+        />
       </View>
       <View style={{ flexDirection: "column" }}>
-        <TouchableOpacity onPress={handleSend}>
+        {/* <TouchableOpacity onPress={handleReactionSelection}>
           <AntDesign name="plussquareo" size={20} color="grey" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <Modal visible={showEmojiSelector} animationType="slide">
         <View style={{ flex: 1, backgroundColor: "white" }}>
-          <FlatList
-            data={EmojiSelection} //emojiData
-            numColumns={5}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleReactionSelection(item)}>
-                <Text style={{ fontSize: 18 }}>{item}</Text>
-              </TouchableOpacity>
-            )}
-          />
-          <TouchableOpacity onPress={toggleEmojiSelector}>
+          <EmojiSelection setSelectedReaction={setSelectedReaction} />
+          <TouchableOpacity
+            style={{ height: 100 }}
+            onPress={toggleEmojiSelector}
+          >
             <EvilIcons name="close-o" size={24} color="black" />
           </TouchableOpacity>
         </View>
