@@ -40,7 +40,7 @@ const ChatInput = () => {
 
   const handleSend = () => {
     setMessages([
-      ...message,
+      ...messages,
       { text: message, sender: "user", reaction: selectedReaction },
     ]);
     setMessage(""), setSelectedReaction("");
@@ -49,7 +49,7 @@ const ChatInput = () => {
       return;
     }
   };
-
+  console.log(messages);
   return (
     <View>
       <View
@@ -91,7 +91,13 @@ const ChatInput = () => {
           data={messages}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => {
-            return <ChatMessage text={item.text} sender={item.sender} />;
+            return (
+              <TouchableOpacity onPress={handleReactionSelection}>
+                <Text>
+                  <ChatMessage text={item.text} sender={item.sender} />
+                </Text>
+              </TouchableOpacity>
+            );
           }}
         />
       </View>
