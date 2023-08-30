@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
   Modal,
   Button,
+  StyleSheet,
   FlatList,
-  ChatMessage,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import EmojiSelection from "./EmojiSelectorScreen";
-// import EmojiReactions from "./Components/ReactionEmoji";
+import Icon from "react-native-vector-icons/FontAwesome";
+import ChatMessage from "./Components/NewMessages";
 
 const ChatInput = () => {
   // const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
@@ -51,32 +52,27 @@ const ChatInput = () => {
 
   return (
     <View>
-      {/* {message?.map((message, index) => ( */}
-      {/* <ChatMessage
-        key={2}
-        text={"message.text"}
-        reactions={emojiData} //emojiData
-        onReactionPress={handleReactionSelection}
-      /> */}
-      {/* ))} */}
       <View
         style={{
           flexDirection: "row",
           borderWidth: 1,
-          padding: 5,
+          padding: 7,
           marginRight: 8,
+          borderRadius: 10,
+          top: 200,
+          alighItems: "stretch",
         }}
       >
-        <TextInput //style={{ flex: 1, borderWidth: 1, padding: 10 }}
+        <TextInput
           placeholder="Type your message..."
           value={message} //selectReaction
-          onChangeText={setSelectedReaction}
+          //onChangeText={setSelectedReaction}
+          onChangeText={(text) => setMessage(text)}
         />
-        {/* // toggleEmojiSelector */}
         <TouchableOpacity
           style={{
-            paddingHorizontal: 4,
-            marginLeft: 8,
+            paddingHorizontal: 10,
+            marginLeft: 20,
           }}
           onPress={() => setShowEmojiSelector(true)}
         >
@@ -84,24 +80,30 @@ const ChatInput = () => {
         </TouchableOpacity>
         <Button
           style={{
-            paddingHorizontal: 4,
-            paddingVertical: 4,
-            flexDirection: "row",
-            marginLeft: 8,
+            borderRadius: 20,
           }}
           title="Send"
           onPress={handleSend}
+        ></Button>
+      </View>
+      <View>
+        <FlatList
+          data={messages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => {
+            return <ChatMessage text={item.text} sender={item.sender} />;
+          }}
         />
       </View>
+
       <View style={{ flexDirection: "column" }}>
         {/* <TouchableOpacity onPress={handleReactionSelection}>
-          <AntDesign name="plussquareo" size={20} color="grey" />
-        </TouchableOpacity> */}
+          //     <AntDesign name="plussquareo" size={20} color="grey" />
+        //   </TouchableOpacity> */}
       </View>
-
       <Modal visible={showEmojiSelector} animationType="slide">
         <View style={{ flex: 1, backgroundColor: "white" }}>
-          <EmojiSelection setSelectedReaction={setSelectedReaction} />
+          <EmojiSelection message={message} setMessage={setMessage} />
           <TouchableOpacity
             style={{ height: 100 }}
             onPress={toggleEmojiSelector}
@@ -114,79 +116,68 @@ const ChatInput = () => {
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#ccc",
+    paddingTop: 8,
+  },
+  textInput: {
+    flex: 1,
+    borderWidth: 1,
+    padding: 10,
+    marginRight: 8,
+  },
+  sendButton: {
+    backgroundColor: "#ccc",
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sendButtonText: {
+    marginLeft: 8,
+  },
+});
+
 export default ChatInput;
 
-// export default ChatInput;
+{
+  /* {message?.map((message, index) => ( */
+}
+{
+  /* <ChatMessage
+    key={2}
+    text={"message.text"}
+    reactions={emojiData} //emojiData
+    onReactionPress={handleReactionSelection}
+  /> */
+}
+{
+  /* ))} */
+}
 
-// const TextInputScreen = () => {
-//   const [message, setMessage] = useState("");
-//   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
+{
+  /* // const newMessage = ({ message, result }) => { */
+}
+{
+  /* // return (
+//   <View>
+//     <FlatList 
+//     data = {message}
+//     />
+//   </View>
+// )
+  // };
 
-//   const handleEmojiSelect = (emoji) => {
-//     setMessage(message + emoji);
-//   };
-
-//   return (
-//     //view ul principal cu ecranul principal
-//     <View>
-//       <TextInput
-//         style={styles.textInput}
-//         value={message}
-//         onChangeText={(text) => setMessage(text)}
-//         placeholder="Type your message..."
-//         multiline
-//       />
-//       <EmojiReactions style={styles.reaction} />
-//       <TouchableOpacity
-//         // size={20}
-//         onPress={() => setShowEmojiSelector(!showEmojiSelector)}
-//       ></TouchableOpacity>
-//       <View
-//         style={{
-//           height: 300,
-//           left: 10,
-//           right: 10,
-//           justifyContent: "center",
-//         }}
-//       >
-//         <EmojiSelector onEmojiSelected={(emoji) => handleEmojiSelect(emoji)} />
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   textInput: {
-//     alignItems: "center",
-//     borderWidth: 3,
-//     borderColor: "grey",
-//     justifyContent: "center",
-//   },
-//   reaction: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//   },
-//   input: {
-//     borderColor: "gray",
-//     borderWidth: 1,
-//     borderRadius: 8,
-//     padding: 8,
-//     marginBottom: 10,
-//   },
-//   reactionEmoji: {
-//     flexDirection: "row",
-//     marginTop: 10,
-//   },
-//   emojiContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//   },
-// });
-
-// export default TextInputScreen;
-// export default reaction;
+  // setMessages([...messages, newMessage]);
+  // setMessage(""); */
+}
