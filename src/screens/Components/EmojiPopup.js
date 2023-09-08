@@ -9,7 +9,7 @@ const EmojiPopup = ({ visible, onClose, selectedMessage }) => {
 
   const handleEmojiSelect = (emoji) => {
     setSelectedReaction(emoji);
-    selectedReaction("");
+    // selectedReaction("");
     onClose();
   };
 
@@ -46,9 +46,9 @@ const EmojiPopup = ({ visible, onClose, selectedMessage }) => {
               </TouchableOpacity>
             ))}
           </View>
-          {setMessage ? (
-            <View {...(selectedReaction && <Text>{selectedReaction}</Text>)} />
-          ) : null}
+          {/* {message ? ( */}
+          <View {...(selectedReaction && <Text>{selectedReaction}</Text>)} />
+          {/* ) : null} */}
         </View>
       </View>
     </Modal>
