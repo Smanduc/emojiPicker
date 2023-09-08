@@ -50,15 +50,6 @@
 // export default EmojiReactions;
 // export default EmojiButton;
 
-{
-  /* <AntDesign
-    name="plussquareo"
-    size={20}
-    color="grey"
-    alighItems="flex-end"
-    /> */
-}
-
 // const EmojiButton = ({ emoji, onPress }) => {
 //   return (
 //     <AntDesign name="plussquareo" size={20} color="grey" onPress={onPress}>

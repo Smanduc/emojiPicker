@@ -15,33 +15,28 @@ import { Entypo } from "@expo/vector-icons";
 import EmojiSelection from "./EmojiSelectorScreen";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ChatMessage from "./Components/NewMessages";
+import EmojiPopup from "./Components/EmojiPopup";
 
 const ChatInput = () => {
-  // const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
-  const [selectedReaction, setSelectedReaction] = useState("");
+  const [selectedReaction, setSelectedReaction] = useState(null); //the reaction emoji
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [selectedMessage, setSelectedMessage] = useState(null);
 
   const toggleEmojiSelector = () => {
     setShowEmojiSelector(!showEmojiSelector);
   };
 
-  // const handleEmojiSelect = (emoji) => {
-  //   setText(text + emoji);
-  // };
-
-  const emojiData = ["❤️", "👍"];
-
-  const handleReactionSelection = (reaction) => {
-    setSelectedReaction(reaction);
-    setShowEmojiSelector(false);
+  const toggleEmojiPopup = (selectedMessage) => {
+    setSelectedMessage(selectedMessage);
+    setSelectedReaction(!selectedReaction);
   };
 
   const handleSend = () => {
     setMessages([
       ...messages,
-      { text: message, sender: "user", reaction: selectedReaction },
+      { text: message, sender: "user" }, //, reaction: handleReactionSelection }
     ]);
     setMessage(""), setSelectedReaction("");
 
@@ -49,7 +44,6 @@ const ChatInput = () => {
       return;
     }
   };
-  console.log(messages);
   return (
     <View>
       <View
@@ -59,14 +53,13 @@ const ChatInput = () => {
           padding: 7,
           marginRight: 8,
           borderRadius: 10,
-          top: 200,
+          top: 400,
           alighItems: "stretch",
         }}
       >
         <TextInput
           placeholder="Type your message..."
-          value={message} //selectReaction
-          //onChangeText={setSelectedReaction}
+          value={message}
           onChangeText={(text) => setMessage(text)}
         />
         <TouchableOpacity
@@ -92,21 +85,31 @@ const ChatInput = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onPress={handleReactionSelection}>
-                <Text>
-                  <ChatMessage text={item.text} sender={item.sender} />
+              <TouchableOpacity onPress={() => toggleEmojiPopup(item)}>
+                <Text style={styles.messages}>
+                  <View>
+                    <ChatMessage
+                      text={item.text}
+                      sender={item.sender}
+                      reaction={item.reaction}
+                    />
+                  </View>
                 </Text>
               </TouchableOpacity>
             );
           }}
         />
+        {selectedMessage ? (
+          <EmojiPopup
+            style={styles.popup}
+            visible={selectedReaction}
+            onClose={() => setSelectedReaction(false)}
+            selectedMessage={selectedMessage}
+          />
+        ) : null}
       </View>
 
-      <View style={{ flexDirection: "column" }}>
-        {/* <TouchableOpacity onPress={handleReactionSelection}>
-          //     <AntDesign name="plussquareo" size={20} color="grey" />
-        //   </TouchableOpacity> */}
-      </View>
+      <View style={{ flexDirection: "column" }}></View>
       <Modal visible={showEmojiSelector} animationType="slide">
         <View style={{ flex: 1, backgroundColor: "white" }}>
           <EmojiSelection message={message} setMessage={setMessage} />
@@ -152,38 +155,15 @@ const styles = StyleSheet.create({
   sendButtonText: {
     marginLeft: 8,
   },
+  messages: {
+    marginVertical: 4,
+  },
+  popup: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
 });
 
 export default ChatInput;
-
-{
-  /* {message?.map((message, index) => ( */
-}
-{
-  /* <ChatMessage
-    key={2}
-    text={"message.text"}
-    reactions={emojiData} //emojiData
-    onReactionPress={handleReactionSelection}
-  /> */
-}
-{
-  /* ))} */
-}
-
-{
-  /* // const newMessage = ({ message, result }) => { */
-}
-{
-  /* // return (
-//   <View>
-//     <FlatList 
-//     data = {message}
-//     />
-//   </View>
-// )
-  // };
-
-  // setMessages([...messages, newMessage]);
-  // setMessage(""); */
-}

@@ -41,13 +41,3 @@ const EmojiSelection = ({ message, setMessage }) => {
 };
 
 export default EmojiSelection;
-
-// const EmojiSelector = ({ onEmojiSelected }) => {
-//   return (
-//     <View>
-//       <EmojiSelector onEmojiSelected={onEmojiSelected} />
-//     </View>
-//   );
-// };
-
-// export default EmojiSelector;
